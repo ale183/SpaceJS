@@ -5,8 +5,8 @@ const KEY_SPACE = 32;
 const GAME_WIDTH = 800;
 const GAME_HEIGHT = 800;
 
-const LASER_SOUND = new sound("../assets/laser.mp3");
-const EXPLOSION_SOUND = new sound("../assets/explosion.mp3");
+const LASER_SOUND = new sound("./assets/laser.mp3");
+const EXPLOSION_SOUND = new sound("./assets/explosion.mp3");
 
 var lasers = [];
 var enemies = [];
