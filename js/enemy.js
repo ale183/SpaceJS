@@ -11,6 +11,7 @@ class Enemy{
         this.l = l;
         this.health = HEALTH;
         this.cooldown = COOLDOWN;
+        this.speed = SPEED;
         this.right = true;
         this.despawn = false;
         this.color = color;
@@ -28,9 +29,9 @@ class Enemy{
 
         this.getSpeed = function(){
             if(this.right){
-                return SPEED;
+                return this.speed;
             }
-            return -SPEED;
+            return -this.speed;
         }
     }
 }
