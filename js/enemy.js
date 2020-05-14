@@ -1,13 +1,16 @@
 class Enemy{
     constructor(x, y, l, color, context){
 
-        const HEALTH = 50;
+        const HEALTH = 40;
         const SPEED = 50;
+        const COOLDOWN = Math.random()*2+0.5;
+        this.type = "enemy";
 
         this.x = x - (l/2);
         this.y = y;
         this.l = l;
         this.health = HEALTH;
+        this.cooldown = COOLDOWN;
         this.right = true;
         this.despawn = false;
         this.color = color;
@@ -18,6 +21,10 @@ class Enemy{
             ctx.fillStyle = this.color;
             ctx.fillRect(this.x, this.y, this.l, this.l);
         };
+
+        this.resetCooldown = function(){
+            this.cooldown = COOLDOWN;
+        }
 
         this.getSpeed = function(){
             if(this.right){

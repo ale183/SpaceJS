@@ -65,17 +65,26 @@ function updatePlayer(dt){
     if(this.player.cooldown > 0){
         this.player.cooldown -= dt;
     }
+
+    if(this.player.health <= 0){
+        this.player.color = "purple";
+    }
 }
 
 function updateLasers(dt){
     for(i = this.lasers.length-1; i >= 0; i--){
         this.lasers[i].y -= dt * this.lasers[i].getSpeed();
-        if(this.lasers[i].y < 0){
+        if(this.lasers[i].y <= 0 || this.lasers[i].y >= 800){
             this.lasers[i].despawn = true;
         }
         for(j = this.enemies.length-1; j >= 0; j--){
-            if(this.lasers[i].hit(this.enemies[j])){
+            if(this.lasers[i].type === "player" && this.lasers[i].hit(this.enemies[j]) && !this.lasers[i].despawn){
                 this.enemies[j].health -= this.lasers[i].getDamage();
+                this.lasers[i].despawn = true;
+            }
+            if(this.lasers[i].type === "enemy" && this.lasers[i].hit(this.player) && !this.lasers[i].despawn){
+                console.log(this.player.health);
+                this.player.health -= this.lasers[i].getDamage();
                 this.lasers[i].despawn = true;
             }
         }
@@ -88,6 +97,15 @@ function updateEnemies(dt){
             this.enemies[i].despawn = true;
         }
         else{
+
+            if(this.enemies[i].cooldown <= 0){
+                this.lasers.push(new Laser(this.enemies[i], this.context));
+                this.enemies[i].resetCooldown();
+            }
+            else{
+                this.enemies[i].cooldown -= dt;
+            }
+
             this.enemies[i].x += dt * this.enemies[i].getSpeed();
             if(this.enemies[i].x >= GAME_WIDTH-this.enemies[i].l){
                 this.enemies[i].y += 60;

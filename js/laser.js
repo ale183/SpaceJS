@@ -1,43 +1,57 @@
 class Laser{
-    constructor(player, context){
+    constructor(entity, context){
 
         const SPEED = 300;
         const WIDTH = 2.5;
         const HEIGHT = 10;
         const DAMAGE = 10;
 
-        this.speed = SPEED;
-
-        this.player = player;
         this.context = context;
+        this.type = entity.type;
+        this.color = entity.color;
         this.despawn = false;
 
-        this.x = this.player.x + (this.player.l / 2);
-        this.y = this.player.y - this.player.l / 2;
+        if(this.type === "player"){
+            this.x = entity.x + (entity.l / 2);
+            this.y = entity.y - (entity.l / 2);
+        }
+        else{
+            this.x = entity.x + (entity.l / 2);
+            this.y = entity.y + (entity.l + entity.l/2);
+        }
 
         this.draw = function(){
             var ctx = this.context;
             ctx.beginPath();
             ctx.moveTo(this.x, this.y);
             ctx.lineTo(this.x, this.y + HEIGHT);
-            ctx.strokeStyle = this.player.color;
+            ctx.strokeStyle = this.color;
             ctx.lineWidth = WIDTH;
             ctx.stroke();
         }
 
         this.getSpeed = function(){
-            return this.speed;
+            if(this.type === "player"){
+                return SPEED;
+            }
+            return -SPEED;
         }
 
         this.getDamage = function(){
             return DAMAGE;
         }
 
-        this.hit = function(enemy){
-            var distX = Math.abs(this.x - (enemy.x + (enemy.l / 2)));
-            var distY = Math.abs(this.y - (enemy.l / 2) - (enemy.y));
+        this.hit = function(entity){
+            if(entity.type === "enemy"){
+                var distX = Math.abs(this.x - (entity.x + (entity.l / 2)));
+                var distY = Math.abs(this.y - (entity.l / 2) - (entity.y));
+            }
+            else{
+                var distX = Math.abs(this.x - (entity.x + (entity.l / 2)));
+                var distY = Math.abs(this.y + HEIGHT - (entity.l/2) - (entity.y));
+            }
 
-            if(distX <= (enemy.l / 2) && distY <= (enemy.l / 2)){
+            if(distX <= (entity.l / 2) && distY <= (entity.l / 2)){
                 return true;
             }
             else{

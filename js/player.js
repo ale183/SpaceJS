@@ -1,15 +1,18 @@
 class Player {
     constructor(x, y, l, color, context) {
 
-        const SPEED = 600;
+        const HEALTH = 30;
+        const SPEED = 500;
         const COOLDOWN = 0.5;
+        this.type = "player";
 
-        this.x = x-(l/2);
+        this.x = x - (l/2);
         this.y = y;
         this.l = l;
         this.color = color;
         this.context = context;
         
+        this.health = HEALTH;
         this.cooldown = COOLDOWN;
 
         this.right = false;
