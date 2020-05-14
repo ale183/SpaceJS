@@ -83,7 +83,6 @@ function updateLasers(dt){
                 this.lasers[i].despawn = true;
             }
             if(this.lasers[i].type === "enemy" && this.lasers[i].hit(this.player) && !this.lasers[i].despawn){
-                console.log(this.player.health);
                 this.player.health -= this.lasers[i].getDamage();
                 this.lasers[i].despawn = true;
             }
