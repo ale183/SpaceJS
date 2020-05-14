@@ -4,7 +4,7 @@ class Player {
         const SPEED = 600;
         const COOLDOWN = 0.5;
 
-        this.x = x;
+        this.x = x-(l/2);
         this.y = y;
         this.l = l;
         this.color = color;
