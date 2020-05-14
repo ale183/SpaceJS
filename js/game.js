@@ -7,6 +7,8 @@ const GAME_HEIGHT = 800;
 
 const LASER_SOUND = new sound("./assets/laser.mp3");
 const EXPLOSION_SOUND = new sound("./assets/explosion.mp3");
+const PLAYER_HIT = new sound("./assets/player_hit.mp3");
+const ENEMY_HIT = new sound("./assets/enemy_hit.mp3");
 
 var lasers = [];
 var enemies = [];
@@ -97,10 +99,12 @@ function updateLasers(dt){
         }
         for(j = this.enemies.length-1; j >= 0; j--){
             if(this.lasers[i].type === "player" && this.lasers[i].hit(this.enemies[j]) && !this.lasers[i].despawn){
+                ENEMY_HIT.play();
                 this.enemies[j].health -= this.lasers[i].getDamage();
                 this.lasers[i].despawn = true;
             }
             if(this.lasers[i].type === "enemy" && this.lasers[i].hit(this.player) && !this.lasers[i].despawn){
+                PLAYER_HIT.play();
                 this.player.health -= this.lasers[i].getDamage();
                 this.lasers[i].despawn = true;
             }
