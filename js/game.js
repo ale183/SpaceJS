@@ -49,11 +49,25 @@ function drawElements(){
     }
 }
 
+function playerCanMoveRight(){
+    if(this.player.x >= 800-this.player.l){
+        return false;
+    }
+    return true;
+}
+
+function playerCanMoveLeft(){
+    if(this.player.x <= 0){
+        return false;
+    }
+    return true;
+}
+
 function updatePlayer(dt){
-    if(this.player.right){
+    if(this.player.right && playerCanMoveRight()){
         this.player.x += dt * this.player.getSpeed();
     }
-    else if(this.player.left){
+    else if(this.player.left && playerCanMoveLeft()){
         this.player.x -= dt * this.player.getSpeed();
     }
 
