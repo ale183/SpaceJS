@@ -121,7 +121,6 @@ function updateEnemies(dt){
 
             this.enemies[i].x += dt * this.enemies[i].getSpeed();
             this.enemies[i].speed += dt*1.5;
-            console.log(this.enemies[i].speed);
             if(this.enemies[i].x >= GAME_WIDTH-this.enemies[i].l){
                 this.enemies[i].y += 60;
                 this.enemies[i].x = GAME_WIDTH-this.enemies[i].l-1;
