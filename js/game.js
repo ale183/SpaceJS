@@ -5,6 +5,9 @@ const KEY_SPACE = 32;
 const GAME_WIDTH = 800;
 const GAME_HEIGHT = 800;
 
+const LASER_SOUND = new sound("../assets/laser.mp3");
+const EXPLOSION_SOUND = new sound("../assets/explosion.mp3");
+
 var lasers = [];
 var enemies = [];
 
@@ -72,6 +75,7 @@ function updatePlayer(dt){
     }
 
     if(this.player.space && this.player.cooldown <= 0){
+        LASER_SOUND.play();
         this.lasers.push(new Laser(this.player, this.context));
         this.player.resetCooldown();
     }
@@ -107,6 +111,7 @@ function updateLasers(dt){
 function updateEnemies(dt){
     for(i = this.enemies.length-1; i >= 0; i--){
         if(this.enemies[i].health <= 0){
+            EXPLOSION_SOUND.play();
             this.enemies[i].despawn = true;
         }
         else{
@@ -174,6 +179,18 @@ function onKeyRelease(e){
     if(e.keyCode === KEY_SPACE){
         this.player.space = false;
     }
+}
+
+function sound(src) {
+    this.sound = document.createElement("audio");
+    this.sound.src = src;
+    this.sound.setAttribute("preload", "auto");
+    this.sound.setAttribute("controls", "none");
+    this.sound.style.display = "none";
+    document.body.appendChild(this.sound);
+    this.play = function(){
+        this.sound.play();
+    }   
 }
 
 window.addEventListener("keydown", onKeyDown);
