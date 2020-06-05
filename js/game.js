@@ -22,6 +22,7 @@ var pause = false;
 const ENEMY_NUMBER = 8;
 
 function init(){
+    document.getElementById("startbutton").style.display = 'none';
     fullscreen();
     startGame();
 }
@@ -45,7 +46,18 @@ function newGame(){
 
 function fullscreen(){
     var window = document.documentElement;
-    window.requestFullscreen();
+    if(window.requestFullscreen){
+        window.requestFullscreen();
+    }
+    else if (elem.mozRequestFullScreen){
+        windows.mozRequestFullScreen();
+    }
+    else if (elem.webkitRequestFullscreen){
+        windows.webkitRequestFullscreen();
+    }
+    else if (elem.msRequestFullscreen){
+        windows.msRequestFullscreen();
+    }
 }
 
 function clearContext(){
