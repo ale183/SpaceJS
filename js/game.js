@@ -22,6 +22,11 @@ var pause = false;
 const ENEMY_NUMBER = 8;
 
 function init(){
+    fullscreen();
+    startGame();
+}
+
+function startGame(){
     this.lastUpdate = Date.now();
     this.context = document.getElementById("gameArea").getContext("2d");
     this.player = new Player(GAME_WIDTH/2, GAME_HEIGHT - 80, 40, "blue", context);
@@ -35,7 +40,23 @@ function newGame(){
     clearContext();
     this.enemies = [];
     this.lasers = [];
-    init();
+    startGame();
+}
+
+function fullscreen(){
+    var window = document.documentElement;
+    if(window.requestFullscreen){
+        window.requestFullscreen();
+    }
+    else if (elem.mozRequestFullScreen){
+        windows.mozRequestFullScreen();
+    }
+    else if (elem.webkitRequestFullscreen){
+        windows.webkitRequestFullscreen();
+    }
+    else if (elem.msRequestFullscreen){
+        windows.msRequestFullscreen();
+    }
 }
 
 function clearContext(){
