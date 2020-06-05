@@ -1,7 +1,7 @@
 class Player {
     constructor(x, y, l, color, context) {
 
-        const HEALTH = 30;
+        const HEALTH = 3;
         const SPEED = 500;
         const COOLDOWN = 0.5;
         this.type = "player";

@@ -4,7 +4,7 @@ class Laser{
         const SPEED = 300;
         const WIDTH = 2.5;
         const HEIGHT = 10;
-        const DAMAGE = 10;
+        const DAMAGE = 1;
 
         this.context = context;
         this.type = entity.type;

@@ -1,7 +1,7 @@
 class Enemy{
     constructor(x, y, l, color, context){
 
-        const HEALTH = 40;
+        const HEALTH = 3;
         const SPEED = 50;
         const COOLDOWN = Math.random()*2+0.5;
         this.type = "enemy";

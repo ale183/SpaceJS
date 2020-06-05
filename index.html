@@ -8,6 +8,15 @@
 </head>
 <body onload="init()" style="text-align:center; background-color: black;">
     <canvas id="gameArea" width="800" height="800" style=" border:1px solid lightslategray;"></canvas>
+    <div id="health"></div>
+    <div style="color: white; vertical-align: middle;">
+        Score: <p id="score" style="text-align: right; display: inline;">0</p>
+    </div>
+    <div style="color: tomato; vertical-align: middle;">
+        HiScore: <p id="hiscore" style="text-align: right; display: inline;">0</p>
+    </div>
+    <p id="pause" style="color: white;"></p>
+    <img id="sample" src="" width="25" height="25" alt=""></img>
 </body>
 <script src="js/game.js"></script>
 <script src="js/player.js"></script>

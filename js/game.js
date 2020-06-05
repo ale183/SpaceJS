@@ -1,17 +1,23 @@
 const KEY_RIGHT = 39;
 const KEY_LEFT = 37;
 const KEY_SPACE = 32;
+const KEY_PAUSE = 80;
 
 const GAME_WIDTH = 800;
 const GAME_HEIGHT = 800;
 
+const PAUSE = new sound("./assets/pause.mp3");
 const LASER_SOUND = new sound("./assets/laser.mp3");
 const EXPLOSION_SOUND = new sound("./assets/explosion.mp3");
 const PLAYER_HIT = new sound("./assets/player_hit.mp3");
 const ENEMY_HIT = new sound("./assets/enemy_hit.mp3");
+const WIN = new sound("./assets/win.mp3");
+const GAMEOVER = new sound("./assets/gameover.mp3");
+const HEART_IMG = "./assets/heart.png";
 
 var lasers = [];
 var enemies = [];
+var pause = false;
 
 const ENEMY_NUMBER = 8;
 
@@ -21,7 +27,15 @@ function init(){
     this.player = new Player(GAME_WIDTH/2, GAME_HEIGHT - 80, 40, "blue", context);
     this.player.draw();
     createEnemy();
+    drawHeart();
     window.requestAnimationFrame(updateGame);
+}
+
+function newGame(){
+    clearContext();
+    this.enemies = [];
+    this.lasers = [];
+    init();
 }
 
 function clearContext(){
@@ -54,6 +68,16 @@ function drawElements(){
     }
 }
 
+function drawHeart(){
+    var list = document.getElementById("health");
+    list.innerHTML = "";
+    for(var i = 0; i < this.player.health; i++){
+        var clonedItem = document.getElementById("sample").cloneNode(true);
+        clonedItem.src = HEART_IMG;
+        list.appendChild(clonedItem);
+    }
+}
+
 function playerCanMoveRight(){
     if(this.player.x >= 800-this.player.l){
         return false;
@@ -68,11 +92,24 @@ function playerCanMoveLeft(){
     return true;
 }
 
+function updateScore(points, reset = false){
+    var score = document.getElementById("score");
+    score.innerHTML = parseInt(score.innerHTML) + points;
+    if(reset){
+        var hiScore = document.getElementById("hiscore");
+        if(parseInt(score.innerHTML) > parseInt(hiScore.innerHTML)){
+            hiScore.innerHTML = score.innerHTML;
+        }
+        score.innerHTML = 0;
+    }
+}
+
 function updatePlayer(dt){
+
     if(this.player.right && playerCanMoveRight()){
         this.player.x += dt * this.player.getSpeed();
     }
-    else if(this.player.left && playerCanMoveLeft()){
+    if(this.player.left && playerCanMoveLeft()){
         this.player.x -= dt * this.player.getSpeed();
     }
 
@@ -87,7 +124,9 @@ function updatePlayer(dt){
     }
 
     if(this.player.health <= 0){
-        this.player.color = "purple";
+        GAMEOVER.play();
+        updateScore(0, true);
+        newGame();
     }
 }
 
@@ -107,15 +146,28 @@ function updateLasers(dt){
                 PLAYER_HIT.play();
                 this.player.health -= this.lasers[i].getDamage();
                 this.lasers[i].despawn = true;
+                drawHeart();
             }
         }
     }
 }
 
 function updateEnemies(dt){
+    if(this.enemies.length === 0){
+        WIN.play();
+        newGame();
+    }
     for(i = this.enemies.length-1; i >= 0; i--){
+        
+        if(this.enemies[i].y - (this.enemies[i].l/2 - 1) >= 800){
+            this.enemies[i].despawn = true;
+        }
+
         if(this.enemies[i].health <= 0){
-            EXPLOSION_SOUND.play();
+            if(this.enemies.length !== 1){
+                EXPLOSION_SOUND.play();
+            }
+            updateScore(100);
             this.enemies[i].despawn = true;
         }
         else{
@@ -146,22 +198,29 @@ function updateEnemies(dt){
 
 function updateGame(){
     const currentTime = Date.now();
-    const dt = (currentTime - this.lastUpdate) / 1000;
+    document.getElementById("pause").innerHTML = "Pausa";
+    if(!this.pause){
+        document.getElementById("pause").innerHTML = "";
+        const dt = (currentTime - this.lastUpdate) / 1000;
 
-    updatePlayer(dt);
+        updatePlayer(dt);
 
-    updateLasers(dt);
+        updateLasers(dt);
 
-    updateEnemies(dt);
+        updateEnemies(dt);
 
+        clearContext();
+        drawElements();
+    }
     this.lastUpdate = currentTime;
-
-    clearContext();
-    drawElements();
     window.requestAnimationFrame(updateGame);
 }
 
 function onKeyDown(e){
+    if(e.keyCode === KEY_PAUSE){
+        PAUSE.play();
+        this.pause = !this.pause;
+    }
     if(e.keyCode === KEY_RIGHT){
         this.player.right = true;
     }
