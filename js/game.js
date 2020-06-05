@@ -45,18 +45,7 @@ function newGame(){
 
 function fullscreen(){
     var window = document.documentElement;
-    if(window.requestFullscreen){
-        window.requestFullscreen();
-    }
-    else if (elem.mozRequestFullScreen){
-        windows.mozRequestFullScreen();
-    }
-    else if (elem.webkitRequestFullscreen){
-        windows.webkitRequestFullscreen();
-    }
-    else if (elem.msRequestFullscreen){
-        windows.msRequestFullscreen();
-    }
+    window.requestFullscreen();
 }
 
 function clearContext(){
